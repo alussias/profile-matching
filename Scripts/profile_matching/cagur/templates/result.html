@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Hasil Seleksi{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Profil Standar</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Kriteria</th>
+                            <th>Sub Kriteria</th>
+                            <th>Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in profil_standar %}
+                        <tr>
+                            <td>{{ item.kriteria }}</td>
+                            <td>{{ item.sub_kriteria }}</td>
+                            <td>{{ item.nilai }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3">Belum ada data profil standar</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Perhitungan Gap</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Kriteria</th>
+                            <th>Nilai Calon</th>
+                            <th>Nilai Standar</th>
+                            <th>Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gap in perhitungan_gap %}
+                        <tr>
+                            <td>{{ gap.nama }}</td>
+                            <td>{{ gap.kriteria }}</td>
+                            <td>{{ gap.nilai_calon }}</td>
+                            <td>{{ gap.nilai_standar }}</td>
+                            <td>{{ gap.gap }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">Belum ada perhitungan gap</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Ranking Akhir</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Nama</th>
+                            <th>Total Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rank in ranking %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ rank.nama }}</td>
+                            <td>{{ rank.total_nilai }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3">Belum ada ranking</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

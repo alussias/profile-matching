@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Rekrutmen Guru{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h3 class="fw-bold">Rekrutmen Guru</h3>
+        <h6 class="text-muted mb-4">Mengajar dengan Hati, Menuntun Masa Depan!</h6>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Top Kandidat</h5>
+                <div class="list-group">
+                    {% for top_candidate in top_candidates %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ top_candidate.nama }} (Rank {{ forloop.counter }})</h5>
+                            <small>Skor: {{ top_candidate.total_nilai }}</small>
+                        </div>
+                        <p class="mb-1">{{ top_candidate.telp }}</p>
+                    </div>
+                    {% empty %}
+                    <p>Belum ada kandidat</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Kriteria Seleksi</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kriteria</th>
+                            <th>Sub Kriteria</th>
+                            <th>Bobot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for kriteria in kriteria_list %}
+                        <tr>
+                            <td>{{ kriteria.nama }}</td>
+                            <td>
+                                {% for sub in kriteria.sub_kriteria_set.all %}
+                                {{ sub.desc }}<br>
+                                {% endfor %}
+                            </td>
+                            <td>{{ kriteria.bobot }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3">Belum ada kriteria</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

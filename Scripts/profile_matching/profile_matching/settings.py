@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import pymysql
+from django.db.backends.mysql.base import DatabaseWrapper
+from django.db.backends.mysql.features import DatabaseFeatures
+
+def get_version_from_server_info(server_info):
+    # Fungsi ini akan mengembalikan versi yang selalu compatible
+    return (10, 5, 0)
+
+DatabaseWrapper.get_server_version = get_version_from_server_info
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +39,22 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        }
+    }
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cagur',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +101,12 @@ WSGI_APPLICATION = 'profile_matching.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_dss',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',  # atau IP database
+        'PORT': '3306',
     }
 }
 

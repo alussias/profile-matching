@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Calon Guru{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tambah Calon Guru</h4>
+                <form method="post" action="{% url 'add_calon_guru' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="telp" class="form-label">Nomor Telepon</label>
+                            <input type="text" class="form-control" id="telp" name="telp" required>
+                        </div>
+                    </div>
+
+                    {% for kriteria in kriteria_list %}
+                    <div class="mb-3">
+                        <label for="{{ kriteria.name }}" class="form-label">{{ kriteria.nama }}</label>
+                        <select class="form-select" id="{{ kriteria.name }}" name="{{ kriteria.name }}" required>
+                            <option selected disabled>-- Pilih Opsi --</option>
+                            {% for sub in kriteria.sub_kriteria_set.all %}
+                            <option value="{{ sub.desc }}">{{ sub.desc }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">Tambah Calon Guru</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Daftar Calon Guru</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Telp</th>
+                                <th>Pendidikan</th>
+                                <th>IPK</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cagur in calon_guru_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ cagur.nama }}</td>
+                                <td>{{ cagur.telp }}</td>
+                                <td>{{ cagur.pendidikan }}</td>
+                                <td>{{ cagur.ipk }}</td>
+                                <td>
+                                    <a href="{% url 'edit_calon_guru' cagur.id %}"
+                                        class="btn btn-sm btn-primary">Edit</a>
+                                    <form method="post" action="{% url 'delete_calon_guru' cagur.id %}"
+                                        style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">Tidak ada calon guru</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
